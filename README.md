@@ -1,2 +1,2 @@
 # Universal-Frostwalker
-the to big frostwalker mod put to one for ease of use
+the tow big frostwalker mods put into one for ease of use
