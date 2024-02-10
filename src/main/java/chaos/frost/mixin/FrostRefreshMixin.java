@@ -11,9 +11,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
-public class FrostRefreshMixin {
-    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
-    public void tick(CallbackInfo ci) {
+public abstract class FrostRefreshMixin {
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void tick(CallbackInfo ci) {
         LivingEntity thiss = (LivingEntity) (Object) this;
 
         int i = EnchantmentHelper.getEquipmentLevel(Enchantments.FROST_WALKER, thiss);

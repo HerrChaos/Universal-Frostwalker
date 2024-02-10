@@ -1,7 +1,6 @@
 package chaos.frost.block;
 
 import chaos.frost.NewFrostwalker;
-import chaos.frost.block.custom.frostedMagma;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.Instrument;
@@ -12,10 +11,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
 public class ModBlocks {
-    public static final Block FROSTED_MAGMA  = new frostedMagma(FabricBlockSettings.create()
+    public static final Block FROSTED_MAGMA  = new FrostedMagmaBlock(FabricBlockSettings.create()
             .mapColor(MapColor.DARK_RED)
             .instrument(Instrument.BASEDRUM)
-            .luminance((state) -> 3)
+            .luminance((state) -> 3) // TODO: Maybe make the light level go up the more broken the magma is
             .strength(0.5F)
             .allowsSpawning((state, world, pos, entityType) -> entityType.isFireImmune())
             .postProcess(ModBlocks::always)
