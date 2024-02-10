@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "frost",
+	"version": "1.2.3",
+	"name": "New FrostWalker",
+	"description": "A Simple FrostWalker refactor",
+	"authors": [
+		"Chaos"
+	],
+	"contact": {
+		"youtube": "www.youtube.com/@HerrChaotic",
+		"github": "https://github.com/HerrChaos"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/frost/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"chaos.frost.NewFrostwalker"
+		],
+		"client": [
+			"chaos.frost.NewFrostwalkerClient"
+		]
+	},
+	"mixins": [
+		"frost.mixins.json",
+		{
+			"config": "frost.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.1",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

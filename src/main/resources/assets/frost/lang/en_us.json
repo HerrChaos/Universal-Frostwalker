@@ -1,0 +1,5 @@
+{
+  "text.config.frost-config.option.MaxLevel" : "Max Frostwalker Level",
+  "text.config.frost-config.option.generateIceWhileStill" : "Should blocks generate while standing still",
+  "text.config.frost-config.title" : "Better Frostwalker Configs"
+}
