@@ -1,4 +1,4 @@
-package chaos.frost.block.custom;
+package chaos.frost.block;
 
 import net.minecraft.block.*;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -10,7 +10,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.state.property.Property;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
@@ -18,11 +17,11 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class frostedMagma extends Block {
+public class FrostedMagmaBlock extends Block {
     public static final int MAX_AGE = 3;
-    public static final IntProperty AGE;
+    public static final IntProperty AGE = Properties.AGE_3;
 
-    public frostedMagma(AbstractBlock.Settings settings) {
+    public FrostedMagmaBlock(AbstractBlock.Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(AGE, 0));
     }
@@ -44,14 +43,16 @@ public class frostedMagma extends Block {
         super.onSteppedOn(world, pos, state, entity);
     }
 
+    @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         this.scheduledTick(state, world, pos, random);
         super.randomTick(state, world, pos,random);
     }
 
+    @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         world.scheduleBlockTick(pos, this, MathHelper.nextInt(random, 20, 40));
-        if ((random.nextInt(3) == 0 || this.canMelt(world, pos, 4)) && world.getLightLevel(pos) > 11 - (Integer)state.get(AGE) - state.getOpacity(world, pos) && this.increaseAge(state, world, pos)) {
+        if ((random.nextInt(3) == 0 || this.canMelt(world, pos, 4)) && world.getLightLevel(pos) > 11 - state.get(AGE) - state.getOpacity(world, pos) && this.increaseAge(state, world, pos)) {
             BlockPos.Mutable mutable = new BlockPos.Mutable();
             Direction[] var6 = Direction.values();
             int var7 = var6.length;
@@ -81,6 +82,7 @@ public class frostedMagma extends Block {
         }
     }
 
+    @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
         if (sourceBlock.getDefaultState().isOf(this) && this.canMelt(world, pos, 2)) {
             this.melt(state, world, pos);
@@ -108,22 +110,18 @@ public class frostedMagma extends Block {
         return true;
     }
 
+    @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(AGE);
     }
 
+    @Override
     public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
         return ItemStack.EMPTY;
-    }
-
-    static {
-        AGE = Properties.AGE_3;
     }
 
     protected void melt(BlockState state, World world, BlockPos pos) {
         world.setBlockState(pos, getMeltedState());
         world.updateNeighbor(pos, getMeltedState().getBlock(), pos);
     }
-
-
 }
