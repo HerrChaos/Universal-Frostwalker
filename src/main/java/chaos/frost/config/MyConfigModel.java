@@ -9,8 +9,10 @@ import io.wispforest.owo.config.annotation.RestartRequired;
 @Config(name = "frost-config", wrapperName = "MyConfig")
 public class MyConfigModel {
     @RestartRequired
-    @RangeConstraint(min=1, max= 250)
+    @RangeConstraint(min=1, max= 250) // todo: Isn't the max enchantment level in minecraft 255?
     public int MaxLevel = 4;
 
     public boolean generateIceWhileStill = true;
+
+    public boolean standingOnPowderedSnow = true;
 }
