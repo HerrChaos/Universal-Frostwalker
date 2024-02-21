@@ -27,21 +27,20 @@ public abstract class FrostWalkerRefactor {
 	}
 
 	@Inject(method = "freezeWater", at = @At("HEAD"), cancellable = true)
-	private static void init(LivingEntity user, World world, BlockPos blockPos, int level, CallbackInfo info) {
+	private static void init(LivingEntity user, World world, BlockPos startingPos, int level, CallbackInfo info) {
         final BlockState frostedIceState = Blocks.FROSTED_ICE.getDefaultState();
         final BlockState frostedMagmaState = ModBlocks.FROSTED_MAGMA.getDefaultState();
 
+        // TODO: Why's the max radius 100 blocks? The enchantment maxes out at level 98,
+        //  when the actual limit would be 255.
         int radius = Math.min(100, 2 + level);
-        BlockPos startingPos = blockPos.add(0, -1, 0);
 
         if (user.isSpectator()) return;
 
-        // TODO: Do we really want to check blocks all the way 'radius' blocks above the player?
-        //  Especially when we check if the position is below the player during the loop and ignore it if so
-        for (BlockPos currentPos : BlockPos.iterate(startingPos.add(-radius, -radius, -radius), startingPos.add(radius, radius, radius))) {
+        for (BlockPos currentPos : BlockPos.iterate(startingPos.add(-radius, -2, -radius), startingPos.add(radius, 0, radius))) {
             BlockPos abovePos = currentPos.up();
 
-            if (!(shouldPlaceFrostedBlock(startingPos, currentPos, radius) && world.isAir(abovePos) && currentPos.getY() < user.getBlockPos().getY() + 1))
+            if (!(shouldPlaceFrostedBlock(startingPos, currentPos, radius) && world.isAir(abovePos)))
                 continue;
 
 
