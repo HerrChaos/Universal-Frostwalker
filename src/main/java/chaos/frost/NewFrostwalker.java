@@ -4,6 +4,7 @@ import chaos.frost.block.ModBlocks;
 import chaos.frost.config.MyConfig;
 import net.fabricmc.api.ModInitializer;
 
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +16,9 @@ public class NewFrostwalker implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ModBlocks.registerModBlocks();
-		LOGGER.info("Hello Fabric world!");
+	}
+
+	public static Identifier id(String name) {
+		return new Identifier(MOD_ID, name);
 	}
 }
