@@ -10,11 +10,13 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 
+import static chaos.frost.block.FrostedMagmaBlock.AGE;
+
 public class ModBlocks {
     public static final Block FROSTED_MAGMA  = new FrostedMagmaBlock(FabricBlockSettings.create()
             .mapColor(MapColor.DARK_RED)
             .instrument(Instrument.BASEDRUM)
-            .luminance((state) -> 3) // TODO: Maybe make the light level go up the more broken the magma is
+            .luminance((state) -> state.get(AGE) + 3)
             .strength(0.5F)
             .allowsSpawning((state, world, pos, entityType) -> entityType.isFireImmune())
             .postProcess(ModBlocks::always)

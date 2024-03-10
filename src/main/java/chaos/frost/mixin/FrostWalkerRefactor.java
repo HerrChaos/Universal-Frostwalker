@@ -31,9 +31,7 @@ public abstract class FrostWalkerRefactor {
         final BlockState frostedIceState = Blocks.FROSTED_ICE.getDefaultState();
         final BlockState frostedMagmaState = ModBlocks.FROSTED_MAGMA.getDefaultState();
 
-        // TODO: Why's the max radius 100 blocks? The enchantment maxes out at level 98,
-        //  when the actual limit would be 255.
-        int radius = Math.min(100, 2 + level);
+        int radius = Math.min(255, 2 + level);
 
         if (user.isSpectator()) return;
 
