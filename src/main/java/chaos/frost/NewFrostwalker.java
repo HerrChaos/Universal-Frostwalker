@@ -15,7 +15,9 @@ public class NewFrostwalker implements ModInitializer {
 	public static MyConfig CONFIG = MyConfig.createAndLoad();
 	@Override
 	public void onInitialize() {
-		ModBlocks.registerModBlocks();
+		if (!CONFIG.serverSideOnly()) {
+			ModBlocks.registerModBlocks();
+		}
 	}
 
 	public static Identifier id(String name) {

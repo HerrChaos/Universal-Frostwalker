@@ -15,4 +15,7 @@ public class MyConfigModel {
     public boolean generateIceWhileStill = true;
 
     public boolean standingOnPowderedSnow = true;
+
+    @RestartRequired
+    public boolean serverSideOnly = false;
 }
