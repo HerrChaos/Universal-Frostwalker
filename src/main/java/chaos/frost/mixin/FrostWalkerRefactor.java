@@ -23,7 +23,7 @@ public abstract class FrostWalkerRefactor {
 
 	@Inject(method = "getMaxLevel", at = @At("RETURN"), cancellable = true)
 	private void onGetMaxLevel(CallbackInfoReturnable<Integer> cir) {
-		cir.setReturnValue(NewFrostwalker.CONFIG.MaxLevel());
+		cir.setReturnValue(NewFrostwalker.CONFIG.maxLevel);
 	}
 
 	@Inject(method = "freezeWater", at = @At("HEAD"), cancellable = true)
@@ -45,7 +45,7 @@ public abstract class FrostWalkerRefactor {
             final BlockState currentBlockState = world.getBlockState(currentPos);
             final Block currentBlock = currentBlockState.getBlock();
 
-            if ((world.getBlockState(currentPos) == FrostedMagmaBlock.getMeltedState() || currentBlock == ModBlocks.FROSTED_MAGMA) && level >= NewFrostwalker.CONFIG.MaxLevel()) {
+            if ((world.getBlockState(currentPos) == FrostedMagmaBlock.getMeltedState() || currentBlock == ModBlocks.FROSTED_MAGMA) && level >= NewFrostwalker.CONFIG.maxLevel) {
                 if (!frostedMagmaState.canPlaceAt(world, currentPos) || !world.canPlace(frostedMagmaState, currentPos, ShapeContext.absent()))
                     continue;
                 world.setBlockState(currentPos, frostedMagmaState);

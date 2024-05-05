@@ -1,7 +1,8 @@
 package chaos.frost;
 
 import chaos.frost.block.ModBlocks;
-import chaos.frost.config.MyConfig;
+import chaos.frost.commands.ModServerCommands;
+import chaos.frost.config.UniversalConfig;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.util.Identifier;
@@ -12,10 +13,11 @@ public class NewFrostwalker implements ModInitializer {
 
     public static final Logger LOGGER = LoggerFactory.getLogger("frost");
 	public static final String MOD_ID = "frost";
-	public static MyConfig CONFIG = MyConfig.createAndLoad();
+	public static UniversalConfig CONFIG = UniversalConfig.createAndLoad();
 	@Override
 	public void onInitialize() {
-		if (!CONFIG.serverSideOnly()) {
+		ModServerCommands.registerCommands();
+		if (!CONFIG.serverSideOnly) {
 			ModBlocks.registerModBlocks();
 		}
 	}

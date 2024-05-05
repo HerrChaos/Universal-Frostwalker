@@ -17,7 +17,7 @@ public abstract class FrostRefreshMixin {
         LivingEntity thiss = (LivingEntity) (Object) this;
 
         int i = EnchantmentHelper.getEquipmentLevel(Enchantments.FROST_WALKER, thiss);
-        if (i > 0 && NewFrostwalker.CONFIG.generateIceWhileStill()) {
+        if (i > 0 && NewFrostwalker.CONFIG.generateIceWhileStill) {
             FrostWalkerEnchantment.freezeWater(thiss, thiss.getWorld(), thiss.getBlockPos(), i);
         }
     }
