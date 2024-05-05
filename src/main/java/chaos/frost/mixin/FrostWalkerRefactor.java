@@ -29,7 +29,6 @@ public abstract class FrostWalkerRefactor {
 	@Inject(method = "freezeWater", at = @At("HEAD"), cancellable = true)
 	private static void init(LivingEntity user, World world, BlockPos startingPos, int level, CallbackInfo info) {
         final BlockState frostedIceState = Blocks.FROSTED_ICE.getDefaultState();
-        final BlockState frostedMagmaState = ModBlocks.FROSTED_MAGMA.getDefaultState();
 
         int radius = Math.min(255, 2 + level);
 
@@ -45,11 +44,14 @@ public abstract class FrostWalkerRefactor {
             final BlockState currentBlockState = world.getBlockState(currentPos);
             final Block currentBlock = currentBlockState.getBlock();
 
-            if ((world.getBlockState(currentPos) == FrostedMagmaBlock.getMeltedState() || currentBlock == ModBlocks.FROSTED_MAGMA) && level >= NewFrostwalker.CONFIG.maxLevel) {
-                if (!frostedMagmaState.canPlaceAt(world, currentPos) || !world.canPlace(frostedMagmaState, currentPos, ShapeContext.absent()))
-                    continue;
-                world.setBlockState(currentPos, frostedMagmaState);
-                world.scheduleBlockTick(currentPos, ModBlocks.FROSTED_MAGMA, MathHelper.nextInt(user.getRandom(), 60, 120));
+            if (!NewFrostwalker.CONFIG.serverSideOnly) {
+                final BlockState frostedMagmaState = ModBlocks.FROSTED_MAGMA.getDefaultState();
+                if ((world.getBlockState(currentPos) == FrostedMagmaBlock.getMeltedState() || currentBlock == ModBlocks.FROSTED_MAGMA) && level >= NewFrostwalker.CONFIG.maxLevel) {
+                    if (!frostedMagmaState.canPlaceAt(world, currentPos) || !world.canPlace(frostedMagmaState, currentPos, ShapeContext.absent()))
+                        continue;
+                    world.setBlockState(currentPos, frostedMagmaState);
+                    world.scheduleBlockTick(currentPos, ModBlocks.FROSTED_MAGMA, MathHelper.nextInt(user.getRandom(), 60, 120));
+                }
             }
 
             boolean shouldDropItem = false;

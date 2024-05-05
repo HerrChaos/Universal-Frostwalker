@@ -16,20 +16,25 @@ public class UniversalConfig {
     public boolean standingOnPowderedSnow;
 
     public boolean serverSideOnly;
+
+    public boolean serverSideOnlyAfterRestart;
     public UniversalConfig(int maxLevel, boolean generateIceWhileStill, boolean standingOnPowderedSnow, boolean serverSideOnly) {
         this.maxLevel = maxLevel;
         this.generateIceWhileStill = generateIceWhileStill;
         this.standingOnPowderedSnow = standingOnPowderedSnow;
         this.serverSideOnly = serverSideOnly;
+        this.serverSideOnlyAfterRestart = serverSideOnly;
     }
     public static UniversalConfig defaultConfig() {
         return new UniversalConfig(4, true, true, false);
     }
-    public static UniversalConfig createAndLoad() {
+    public static UniversalConfig createOrLoad() {
         if (new File("config/universal-config/universal-config.json").exists()) {
             Gson gson = new Gson();
             try (FileReader fileReader = new FileReader("config/universal-config/universal-config.json")) {
-                return gson.fromJson(fileReader, UniversalConfig.class);
+                UniversalConfig config = gson.fromJson(fileReader, UniversalConfig.class);
+                config.serverSideOnly = config.serverSideOnlyAfterRestart;
+                return config;
             } catch (IOException e) {
                 e.printStackTrace();
             }
