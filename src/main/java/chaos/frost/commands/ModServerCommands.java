@@ -53,6 +53,16 @@ public class ModServerCommands {
                             return 1;
                         })));
 
+        frostConfig.then(literal("set-meltIceInDark")
+                .then(argument("meltIceInDark", BoolArgumentType.bool())
+                        .executes(context -> {
+                            final boolean meltIceInDark = BoolArgumentType.getBool(context, "meltIceInDark");
+                            NewFrostwalker.CONFIG.meltIceInTheDark = meltIceInDark;
+                            NewFrostwalker.CONFIG.saveToFile();
+                            context.getSource().sendMessage(Text.of("Set meltIceInDark to: " + meltIceInDark));
+                            return 1;
+                        })));
+
         frostConfig.then(literal("set-generateIceWhileStandingStill")
                 .then(argument("generateIceWhileStandingStill", BoolArgumentType.bool())
                         .executes(context -> {
