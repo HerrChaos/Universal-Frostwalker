@@ -43,6 +43,16 @@ public class ModServerCommands {
                             return 1;
                         })));
 
+        frostConfig.then(literal("set-noIceFallDamage")
+                .then(argument("noIceFallDamage", BoolArgumentType.bool())
+                        .executes(context -> {
+                            final boolean noIceFallDamage = BoolArgumentType.getBool(context, "noIceFallDamage");
+                            NewFrostwalker.CONFIG.noIceFallDamage = noIceFallDamage;
+                            NewFrostwalker.CONFIG.saveToFile();
+                            context.getSource().sendMessage(Text.of("Set noIceFallDamage to: " + noIceFallDamage));
+                            return 1;
+                        })));
+
         frostConfig.then(literal("set-generateIceWhileStandingStill")
                 .then(argument("generateIceWhileStandingStill", BoolArgumentType.bool())
                         .executes(context -> {

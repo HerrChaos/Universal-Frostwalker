@@ -18,15 +18,17 @@ public class UniversalConfig {
     public boolean serverSideOnly;
 
     public boolean serverSideOnlyAfterRestart;
-    public UniversalConfig(int maxLevel, boolean generateIceWhileStill, boolean standingOnPowderedSnow, boolean serverSideOnly) {
+    public boolean noIceFallDamage;
+    public UniversalConfig(int maxLevel, boolean generateIceWhileStill, boolean standingOnPowderedSnow, boolean serverSideOnly, boolean noIceFallDamage) {
         this.maxLevel = maxLevel;
         this.generateIceWhileStill = generateIceWhileStill;
         this.standingOnPowderedSnow = standingOnPowderedSnow;
         this.serverSideOnly = serverSideOnly;
         this.serverSideOnlyAfterRestart = serverSideOnly;
+        this.noIceFallDamage = noIceFallDamage;
     }
     public static UniversalConfig defaultConfig() {
-        return new UniversalConfig(4, true, true, false);
+        return new UniversalConfig(4, true, true, false, true);
     }
     public static UniversalConfig createOrLoad() {
         if (new File("config/universal-config/universal-config.json").exists()) {
