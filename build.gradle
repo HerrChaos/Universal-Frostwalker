@@ -1,5 +1,9 @@
+import dex.plugins.outlet.v2.util.ReleaseType
+
 plugins {
 	id 'fabric-loom' version '1.6-SNAPSHOT'
+	id 'io.github.dexman545.outlet' version '1.6.1'
+	id 'com.modrinth.minotaur' version '2.+'
 	id 'maven-publish'
 }
 
@@ -8,6 +12,17 @@ group = project.maven_group
 
 base {
 	archivesName = project.archives_base_name
+}
+
+outlet {
+	allowedReleaseTypes = [ReleaseType.RELEASE]
+	maintainPropertiesFile = System.getenv("DISABLE_PROPERTIES_UPDATE") == null
+	mcVersionRange = project.supported_minecraft_versions
+	propertiesData = [
+	        'yarn_mappings': outlet.yarnVersion(project.minecraft_version),
+			'loader_version': outlet.loaderVersion(),
+			'fabric_version': outlet.fapiVersion(project.minecraft_version)
+	]
 }
 
 repositories {
@@ -61,10 +76,16 @@ dependencies {
 }
 
 processResources {
-	inputs.property "version", project.version
+	inputs.properties(Map.of(
+			"version", project.version,
+			"supportedMinecraftVersions", project.supported_minecraft_versions
+	))
 
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+		expand(Map.of(
+				"version", project.version,
+				"supportedMinecraftVersions", project.supported_minecraft_versions,
+		))
 	}
 }
 
@@ -104,3 +125,23 @@ publishing {
 		// retrieving dependencies.
 	}
 }
+
+modrinth {
+	token = System.getenv("MODRINTH_TOKEN")
+	projectId = "better-frost-walker"
+	def customVersionName = System.getenv("VERSION_NAME")
+	if (customVersionName != null) versionName = customVersionName
+	versionNumber = "${project.version}"
+	versionType = "release"
+	uploadFile = remapJar.archiveFile
+	//additionalFiles = [sourcesJar.archiveFile, javadocJar.archiveFile]
+	additionalFiles = [sourcesJar.archiveFile]
+	gameVersions = outlet.mcVersions()
+	syncBodyFrom = rootProject.file("README.md").text
+
+	dependencies {
+		required.project "fabric-api"
+	}
+}
+
+tasks.modrinth.dependsOn(tasks.modrinthSyncBody)

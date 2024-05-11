@@ -1,0 +1,46 @@
+name: Publish the mod
+
+on:
+  release:
+    types: [published]
+
+
+jobs:
+  publish:
+    runs-on: ubutnu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build with Gradle
+        run: ./gradlew build
+        env:
+          DISABLE_PROPERTIES_UPDATE: true
+
+      - name: Upload to Modrinth
+        run: ./gradlew modrinth
+        env:
+          DISABLE_PROPERTIES_UPDATE: true
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          VERSION_NAME: ${{ github.event.release.name }}
+
+      - name: Upload to GitHub
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/libs/*.jar
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
