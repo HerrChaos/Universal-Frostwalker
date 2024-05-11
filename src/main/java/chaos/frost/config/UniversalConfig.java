@@ -1,13 +1,17 @@
 package chaos.frost.config;
 
 import com.google.gson.Gson;
+import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 
 public class UniversalConfig {
+    private static final Path CONFIG_FILE_LOCATION = FabricLoader.getInstance().getConfigDir().resolve("better-frost-walker").resolve("better-frost-walker.json");
+    private static final File CONFIG_FILE = CONFIG_FILE_LOCATION.toFile();
 
     public int maxLevel;
 
@@ -31,9 +35,9 @@ public class UniversalConfig {
         return new UniversalConfig(4, true, true, false, true);
     }
     public static UniversalConfig createOrLoad() {
-        if (new File("config/universal-config/universal-config.json").exists()) {
+        if (CONFIG_FILE.exists()) {
             Gson gson = new Gson();
-            try (FileReader fileReader = new FileReader("config/universal-config/universal-config.json")) {
+            try (FileReader fileReader = new FileReader(CONFIG_FILE)) {
                 UniversalConfig config = gson.fromJson(fileReader, UniversalConfig.class);
                 config.serverSideOnly = config.serverSideOnlyAfterRestart;
                 return config;
@@ -49,8 +53,8 @@ public class UniversalConfig {
     public void saveToFile() {
         Gson gson = new Gson();
         String json = gson.toJson(this);
-        if (!new File("config/universal-config").exists()) {
-            if (new File("config/universal-config").mkdirs()) {
+        if (!CONFIG_FILE.getParentFile().exists()) {
+            if (CONFIG_FILE.getParentFile().mkdirs()) {
                 System.out.println("Directory created successfully on first time launch");
             } else {
                 System.out.println("Failed to create directory.");
@@ -58,7 +62,7 @@ public class UniversalConfig {
             }
         }
 
-        try (FileWriter fileWriter = new FileWriter("config/universal-config/universal-config.json")) {
+        try (FileWriter fileWriter = new FileWriter(CONFIG_FILE)) {
             fileWriter.write(json);
         } catch (IOException e) {
             e.printStackTrace();
