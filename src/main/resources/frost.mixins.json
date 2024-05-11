@@ -3,6 +3,7 @@
   "package": "chaos.frost.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AllWaysFreezeIceMixin",
     "FrostRefreshMixin",
     "FrostWalkerRefactor",
     "NoIceFallDamage",
