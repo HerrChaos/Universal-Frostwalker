@@ -1,6 +1,7 @@
 package chaos.frost.config;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.File;
@@ -12,6 +13,7 @@ import java.nio.file.Path;
 public class UniversalConfig {
     private static final Path CONFIG_FILE_LOCATION = FabricLoader.getInstance().getConfigDir().resolve("better-frost-walker").resolve("better-frost-walker.json");
     private static final File CONFIG_FILE = CONFIG_FILE_LOCATION.toFile();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public int maxLevel;
 
@@ -36,9 +38,8 @@ public class UniversalConfig {
     }
     public static UniversalConfig createOrLoad() {
         if (CONFIG_FILE.exists()) {
-            Gson gson = new Gson();
             try (FileReader fileReader = new FileReader(CONFIG_FILE)) {
-                UniversalConfig config = gson.fromJson(fileReader, UniversalConfig.class);
+                UniversalConfig config = GSON.fromJson(fileReader, UniversalConfig.class);
                 config.serverSideOnly = config.serverSideOnlyAfterRestart;
                 return config;
             } catch (IOException e) {
@@ -51,8 +52,7 @@ public class UniversalConfig {
     }
 
     public void saveToFile() {
-        Gson gson = new Gson();
-        String json = gson.toJson(this);
+        String json = GSON.toJson(this);
         if (!CONFIG_FILE.getParentFile().exists()) {
             if (CONFIG_FILE.getParentFile().mkdirs()) {
                 System.out.println("Directory created successfully on first time launch");
