@@ -10,6 +10,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import static com.mojang.text2speech.Narrator.LOGGER;
+
 public class UniversalConfig {
     private static final Path CONFIG_FILE_LOCATION = FabricLoader.getInstance().getConfigDir().resolve("better-frost-walker").resolve("better-frost-walker.json");
     private static final File CONFIG_FILE = CONFIG_FILE_LOCATION.toFile();
@@ -59,9 +61,9 @@ public class UniversalConfig {
         String json = GSON.toJson(this);
         if (!CONFIG_FILE.getParentFile().exists()) {
             if (CONFIG_FILE.getParentFile().mkdirs()) {
-                System.out.println("Directory created successfully on first time launch");
+                LOGGER.info("Directory created successfully on first time launch");
             } else {
-                System.out.println("Failed to create directory.");
+                LOGGER.error("Failed to create directory.");
                 return; // Exit the method if directory creation fails
             }
         }
