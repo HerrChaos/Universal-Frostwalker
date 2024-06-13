@@ -67,8 +67,9 @@ public class ModServerCommands {
                 .then(argument("generateIceWhileStandingStill", BoolArgumentType.bool())
                         .executes(context -> {
                             final boolean generateIceWhileStandingStill = BoolArgumentType.getBool(context, "generateIceWhileStandingStill");
-                            NewFrostwalker.CONFIG.generateIceWhileStill = generateIceWhileStandingStill;
+                            NewFrostwalker.CONFIG.generateIceWhileStillAfterRestart = generateIceWhileStandingStill;
                             NewFrostwalker.CONFIG.saveToFile();
+                            context.getSource().sendMessage(Text.of("THIS WILL REQUIRE A RESTART!!"));
                             context.getSource().sendMessage(Text.of("Set generateIceWhileStandingStill to: " + generateIceWhileStandingStill));
                             return 1;
                         })));

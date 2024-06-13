@@ -21,6 +21,8 @@ public class UniversalConfig {
 
     public boolean generateIceWhileStill;
 
+    public boolean generateIceWhileStillAfterRestart;
+
     public boolean standingOnPowderedSnow;
 
     public boolean serverSideOnly;
@@ -33,6 +35,7 @@ public class UniversalConfig {
     public UniversalConfig(int maxLevel, boolean generateIceWhileStill, boolean standingOnPowderedSnow, boolean serverSideOnly, boolean noIceFallDamage, boolean meltIceOnTheDark) {
         this.maxLevel = maxLevel;
         this.generateIceWhileStill = generateIceWhileStill;
+        this.generateIceWhileStillAfterRestart = generateIceWhileStill;
         this.standingOnPowderedSnow = standingOnPowderedSnow;
         this.serverSideOnly = serverSideOnly;
         this.serverSideOnlyAfterRestart = serverSideOnly;
@@ -46,6 +49,7 @@ public class UniversalConfig {
         if (CONFIG_FILE.exists()) {
             try (FileReader fileReader = new FileReader(CONFIG_FILE)) {
                 UniversalConfig config = GSON.fromJson(fileReader, UniversalConfig.class);
+                config.generateIceWhileStill = config.generateIceWhileStillAfterRestart;
                 config.serverSideOnly = config.serverSideOnlyAfterRestart;
                 return config;
             } catch (IOException e) {

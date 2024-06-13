@@ -1,11 +1,9 @@
 package chaos.frost.block;
 
 import net.minecraft.block.*;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
@@ -16,6 +14,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+
+import static chaos.frost.NewFrostwalker.hasFrostWalker;
 
 public class FrostedMagmaBlock extends Block {
     public static final int MAX_AGE = 3;
@@ -31,13 +31,13 @@ public class FrostedMagmaBlock extends Block {
     }
 
     @Override
-    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        super.onBreak(world, pos, state, player);
+    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         world.setBlockState(pos, getMeltedState());
+        return super.onBreak(world, pos, state, player);
     }
     @Override
     public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
-        if (!entity.bypassesSteppingEffects() && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity)entity)) {
+        if (!entity.bypassesSteppingEffects() && entity instanceof LivingEntity livingEntity && !hasFrostWalker(livingEntity, world)) {
             entity.damage(world.getDamageSources().hotFloor(), 1.0f);
         }
         super.onSteppedOn(world, pos, state, entity);
@@ -113,11 +113,6 @@ public class FrostedMagmaBlock extends Block {
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(AGE);
-    }
-
-    @Override
-    public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
-        return ItemStack.EMPTY;
     }
 
     protected void melt(BlockState state, World world, BlockPos pos) {
