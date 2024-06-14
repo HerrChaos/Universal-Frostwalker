@@ -43,8 +43,11 @@ public record DropAndReplaceDiskEnchantmentEffect(
 
     @Override
     public void apply(ServerWorld world, int level, EnchantmentEffectContext context, Entity user, Vec3d pos) {
-        BlockPos startingPos = BlockPos.ofFloored(pos).add(this.offset);
-        Random random = user.getRandom();
+        final Entity vehicle = user.getControllingVehicle();
+        if (vehicle != null) pos = vehicle.getPos();
+
+        final BlockPos startingPos = BlockPos.ofFloored(pos).add(this.offset);
+        final Random random = user.getRandom();
         int radius = (int) this.radius.getValue(level);
         int height = (int) this.height.getValue(level);
 
