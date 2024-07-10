@@ -19,7 +19,9 @@ public class ModBlocks {
             .strength(0.5F)
             .allowsSpawning((state, world, pos, entityType) -> entityType.isFireImmune())
             .postProcess(ModBlocks::always)
-            .emissiveLighting(ModBlocks::always));
+            .emissiveLighting(ModBlocks::always)
+            .ticksRandomly()
+    );
 
     public static void registerModBlocks() {
         Registry.register(Registries.BLOCK, id("frosted_magma"), FROSTED_MAGMA);
