@@ -1,6 +1,8 @@
 package chaos.frost.mixin;
 
 import chaos.frost.NewFrostwalker;
+import chaos.frost.block.ModBlocks;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
@@ -14,13 +16,18 @@ import static chaos.frost.NewFrostwalker.hasFrostWalker;
 
 @Mixin(PlayerEntity.class)
 public abstract class NoIceFallDamage {
+
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     public void damage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         final PlayerEntity player = (PlayerEntity) (Object) this;
-        if (hasFrostWalker(player, player.getWorld()) &&
-                player.getWorld().getBlockState(player.getBlockPos().down()).getBlock() == Blocks.FROSTED_ICE &&
-                source.isOf(DamageTypes.FALL) && NewFrostwalker.CONFIG.noIceFallDamage) {
-            cir.setReturnValue(false);
-        }
+        if (!NewFrostwalker.CONFIG.noIceFallDamage) return;
+        if (!source.isOf(DamageTypes.FALL)) return;
+        if (!hasFrostWalker(player, player.getWorld())) return;
+
+        final BlockState blockState = player.getWorld().getBlockState(player.getBlockPos().down());
+        if (
+                blockState.isOf(Blocks.FROSTED_ICE)
+                || blockState.isOf(ModBlocks.FROSTED_MAGMA)
+        ) cir.setReturnValue(false);
     }
 }
