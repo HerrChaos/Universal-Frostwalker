@@ -10,7 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import static com.mojang.text2speech.Narrator.LOGGER;
+import static chaos.frost.NewFrostwalker.LOGGER;
 
 public class UniversalConfig {
     private static final Path CONFIG_FILE_LOCATION = FabricLoader.getInstance().getConfigDir().resolve("better-frost-walker").resolve("better-frost-walker.json");
