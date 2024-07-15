@@ -3,7 +3,6 @@ package chaos.frost;
 import chaos.frost.block.ModBlocks;
 import chaos.frost.commands.ModServerCommands;
 import chaos.frost.config.UniversalConfig;
-import chaos.frost.enchantment.DropAndReplaceDiskEnchantmentEffect;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -13,7 +12,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -32,9 +30,6 @@ public class NewFrostwalker implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("Loading Universal frostwalker mod");
 		ModServerCommands.registerCommands();
-
-		Registry.register(Registries.ENCHANTMENT_ENTITY_EFFECT_TYPE, id("drop_replace_disk"), DropAndReplaceDiskEnchantmentEffect.CODEC);
-		Registry.register(Registries.ENCHANTMENT_LOCATION_BASED_EFFECT_TYPE, id("drop_replace_disk"), DropAndReplaceDiskEnchantmentEffect.CODEC);
 
 		if (!CONFIG.serverSideOnly) {
 			ModBlocks.registerModBlocks();

@@ -27,7 +27,7 @@
     "minecraft:location_changed": [
       {
         "effect": {
-          "type": "frost:drop_replace_disk",
+          "type": "minecraft:replace_disk",
           "block_state": {
             "type": "minecraft:simple_state_provider",
             "state": {
@@ -37,10 +37,10 @@
               }
             }
           },
-          "height": 1.0,
+          "height": 0.0,
           "offset": [
             0,
-            -2,
+            -1,
             0
           ],
           "predicate": {
