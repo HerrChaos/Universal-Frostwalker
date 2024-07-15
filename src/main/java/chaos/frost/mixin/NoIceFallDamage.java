@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static chaos.frost.NewFrostwalker.CONFIG;
 import static chaos.frost.NewFrostwalker.hasFrostWalker;
 
 @Mixin(PlayerEntity.class)
@@ -27,7 +28,7 @@ public abstract class NoIceFallDamage {
         final BlockState blockState = player.getWorld().getBlockState(player.getBlockPos().down());
         if (
                 blockState.isOf(Blocks.FROSTED_ICE)
-                || blockState.isOf(ModBlocks.FROSTED_MAGMA)
+                || (!CONFIG.serverSideOnly && blockState.isOf(ModBlocks.FROSTED_MAGMA))
         ) cir.setReturnValue(false);
     }
 }
