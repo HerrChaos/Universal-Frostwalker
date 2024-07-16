@@ -5,12 +5,16 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.enchantment.EnchantmentEffectContext;
 import net.minecraft.enchantment.effect.entity.ReplaceDiskEnchantmentEffect;
+import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(ReplaceDiskEnchantmentEffect.class)
 public abstract class ReplaceDiskEnchantmentEffectMixin implements ReplaceDiskEnchantmentEffectAccess {
@@ -21,6 +25,19 @@ public abstract class ReplaceDiskEnchantmentEffectMixin implements ReplaceDiskEn
     @Override
     public void betterfrostwalker$setIsFrostWalker() {
         betterfrostwalker$isFrostWalker = true;
+    }
+
+    @ModifyVariable(
+            method = "apply",
+            at = @At("HEAD"),
+            argsOnly = true
+    )
+    private Vec3d betterfrostwalker$setStartingPosToVehicleWhenIsFrostWalker(Vec3d value, ServerWorld world, int level, EnchantmentEffectContext context, Entity user) {
+        if (!betterfrostwalker$isFrostWalker) return value;
+
+        final Entity vehicle = user.getControllingVehicle();
+
+        return vehicle == null ? value : vehicle.getPos();
     }
 
     @WrapOperation(
