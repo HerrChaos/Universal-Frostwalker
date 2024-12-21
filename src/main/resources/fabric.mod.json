@@ -1,11 +1,12 @@
 {
 	"schemaVersion": 1,
 	"id": "frost",
-	"version": "1.2.3",
+	"version": "2.1.0",
 	"name": "New FrostWalker",
 	"description": "A Simple FrostWalker refactor",
 	"authors": [
-		"Chaos"
+		"Chaos",
+		"OffsetMonkey"
 	],
 	"contact": {
 		"youtube": "www.youtube.com/@HerrChaotic",
