@@ -55,17 +55,16 @@ public class FrostedMagmaBlock extends Block {
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         world.scheduleBlockTick(pos, this, MathHelper.nextInt(random, 20, 40));
         if ((random.nextInt(3) == 0 || this.canMelt(world, pos, 4)) && world.getLightLevel(pos) > 11 - state.get(AGE) - state.getOpacity() && this.increaseAge(state, world, pos)) {
-            BlockPos.Mutable mutable = new BlockPos.Mutable();
-            Direction[] var6 = Direction.values();
-            int var7 = var6.length;
+            final BlockPos.Mutable mutable = new BlockPos.Mutable();
+            final Direction[] directions = Direction.values();
 
-            for(int var8 = 0; var8 < var7; ++var8) {
-                Direction direction = var6[var8];
+            for (Direction direction : directions) {
                 mutable.set(pos, direction);
-                BlockState blockState = world.getBlockState(mutable);
-                if (blockState.isOf(this) && !this.increaseAge(blockState, world, mutable)) {
-                    world.scheduleBlockTick(mutable, this, MathHelper.nextInt(random, 20, 40));
-                }
+
+                final BlockState currentState = world.getBlockState(mutable);
+                if (!currentState.isOf(this) || this.increaseAge(currentState, world, mutable)) continue;
+
+                world.scheduleBlockTick(mutable, this, MathHelper.nextInt(random, 20, 40));
             }
 
         } else {
