@@ -129,15 +129,25 @@ publishing {
 modrinth {
 	token = System.getenv("MODRINTH_TOKEN")
 	projectId = "better-frost-walker"
+
 	def customVersionName = System.getenv("VERSION_NAME")
 	if (customVersionName != null) versionName = customVersionName
+
 	versionNumber = "${project.version}"
-	versionType = "release"
+
+	def isPreRelease = System.getenv("VERSION_IS_PRERELEASE")
+	versionType = "false" == isPreRelease ? "release" : "beta"
+
 	uploadFile = remapJar.archiveFile
 	//additionalFiles = [sourcesJar.archiveFile, javadocJar.archiveFile]
 	additionalFiles = [sourcesJar.archiveFile]
+
 	gameVersions = outlet.mcVersions()
+
 	syncBodyFrom = rootProject.file("README.md").text
+
+	def changelogEnv = System.getenv("VERSION_CHANGELOG")
+	if (changelogEnv != null) changelog = changelogEnv
 
 	dependencies {
 		required.project "fabric-api"
