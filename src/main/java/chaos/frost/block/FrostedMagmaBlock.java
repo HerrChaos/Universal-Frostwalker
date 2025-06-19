@@ -14,6 +14,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.block.WireOrientation;
+import org.jetbrains.annotations.Nullable;
 
 import static chaos.frost.NewFrostwalker.hasFrostWalker;
 
@@ -37,8 +39,8 @@ public class FrostedMagmaBlock extends Block {
     }
     @Override
     public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
-        if (!entity.bypassesSteppingEffects() && entity instanceof LivingEntity livingEntity && !hasFrostWalker(livingEntity, world)) {
-            entity.damage(world.getDamageSources().hotFloor(), 1.0f);
+        if ((world instanceof ServerWorld serverWorld) && !entity.bypassesSteppingEffects() && entity instanceof LivingEntity livingEntity && !hasFrostWalker(livingEntity, world)) {
+            entity.damage(serverWorld, world.getDamageSources().hotFloor(), 1.0f);
         }
         super.onSteppedOn(world, pos, state, entity);
     }
@@ -52,7 +54,7 @@ public class FrostedMagmaBlock extends Block {
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         world.scheduleBlockTick(pos, this, MathHelper.nextInt(random, 20, 40));
-        if ((random.nextInt(3) == 0 || this.canMelt(world, pos, 4)) && world.getLightLevel(pos) > 11 - state.get(AGE) - state.getOpacity(world, pos) && this.increaseAge(state, world, pos)) {
+        if ((random.nextInt(3) == 0 || this.canMelt(world, pos, 4)) && world.getLightLevel(pos) > 11 - state.get(AGE) - state.getOpacity() && this.increaseAge(state, world, pos)) {
             BlockPos.Mutable mutable = new BlockPos.Mutable();
             Direction[] var6 = Direction.values();
             int var7 = var6.length;
@@ -83,29 +85,25 @@ public class FrostedMagmaBlock extends Block {
     }
 
     @Override
-    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
         if (sourceBlock.getDefaultState().isOf(this) && this.canMelt(world, pos, 2)) {
             this.melt(state, world, pos);
         }
 
-        super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
+        super.neighborUpdate(state, world, pos, sourceBlock, wireOrientation, notify);
     }
 
     private boolean canMelt(BlockView world, BlockPos pos, int maxNeighbors) {
         int i = 0;
-        BlockPos.Mutable mutable = new BlockPos.Mutable();
-        Direction[] var6 = Direction.values();
-        int var7 = var6.length;
+        final BlockPos.Mutable mutable = new BlockPos.Mutable();
+        final Direction[] directions = Direction.values();
 
-        for(int var8 = 0; var8 < var7; ++var8) {
-            Direction direction = var6[var8];
+        for (Direction direction : directions) {
             mutable.set(pos, direction);
-            if (world.getBlockState(mutable).isOf(this)) {
-                ++i;
-                if (i >= maxNeighbors) {
-                    return false;
-                }
-            }
+
+            if (!world.getBlockState(mutable).isOf(this)) continue;
+
+            if (++i >= maxNeighbors) return false;
         }
         return true;
     }
@@ -117,6 +115,6 @@ public class FrostedMagmaBlock extends Block {
 
     protected void melt(BlockState state, World world, BlockPos pos) {
         world.setBlockState(pos, getMeltedState());
-        world.updateNeighbor(pos, getMeltedState().getBlock(), pos);
+        world.updateNeighbor(pos, getMeltedState().getBlock(), null);
     }
 }

@@ -49,6 +49,6 @@ public class NewFrostwalker implements ModInitializer {
 
 	public static boolean hasFrostWalker(LivingEntity entity, World world) {
 		final RegistryKey<Registry<Enchantment>> enchantmentRegistry = RegistryKeys.ENCHANTMENT;
-		return EnchantmentHelper.getEquipmentLevel(world.getRegistryManager().get(enchantmentRegistry).getEntry(RegistryKey.of(enchantmentRegistry, Enchantments.FROST_WALKER.getValue())).orElseThrow(), entity) > 0;
+		return EnchantmentHelper.getEquipmentLevel(world.getRegistryManager().getOrThrow(enchantmentRegistry).getEntry(Enchantments.FROST_WALKER.getValue()).orElseThrow(), entity) > 0;
 	}
 }
