@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "better-frost-walker:block/frosted_magma_1"
+  }
+}

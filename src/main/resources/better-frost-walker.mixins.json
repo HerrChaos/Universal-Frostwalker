@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"package": "chaos.better_frost_walker.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+        "AlwaysMeltIceMixin",
+        "EnchantmentMixin",
+        "NoIceFallDamage",
+        "PowderedSnowBlockMixin",
+        "ReplaceDiskEnchantmentEffectMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

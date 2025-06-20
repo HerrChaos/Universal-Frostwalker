@@ -1,32 +1,32 @@
 {
 	"schemaVersion": 1,
-	"id": "frost",
+	"id": "better-frost-walker",
 	"version": "2.1.0",
-	"name": "New FrostWalker",
-	"description": "A Simple FrostWalker refactor",
+	"name": "Better Frost Walker",
+	"description": "Makes frost walker better!",
 	"authors": [
 		"Chaos",
-		"OffsetMonkey"
+		"OffsetMonkey538"
 	],
 	"contact": {
 		"youtube": "www.youtube.com/@HerrChaotic",
 		"github": "https://github.com/HerrChaos"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/frost/icon.png",
+	"icon": "assets/better-frost-walker/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"chaos.frost.NewFrostwalker"
+			"chaos.better_frost_walker.BetterFrostWalkerMain"
 		],
 		"client": [
-			"chaos.frost.NewFrostwalkerClient"
+			"chaos.better_frost_walker.BetterFrostWalkerClient"
 		]
 	},
 	"mixins": [
-		"frost.mixins.json",
+		"better-frost-walker.mixins.json",
 		{
-			"config": "frost.client.mixins.json",
+			"config": "better-frost-walker.client.mixins.json",
 			"environment": "client"
 		}
 	],
