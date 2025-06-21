@@ -1,6 +1,5 @@
 package chaos.better_frost_walker.block;
 
-import chaos.better_frost_walker.BetterFrostWalkerMain;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.registry.Registries;
@@ -38,9 +37,8 @@ public class ModBlocks {
         return Registry.register(Registries.BLOCK, key, blockConstructor.apply(settings));
     }
 
-    public static void registerModBlocks() {
-        //Registry.register(Registries.BLOCK, id("frosted_magma"), FROSTED_MAGMA);
-        BetterFrostWalkerMain.LOGGER.info("Registering ModBlocks for " + BetterFrostWalkerMain.MOD_ID);
+    public static void register() {
+        // Registers blocks by loading the class
     }
 
 

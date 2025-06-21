@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import static chaos.better_frost_walker.BetterFrostWalkerMain.LOGGER;
 import static chaos.better_frost_walker.BetterFrostWalkerMain.MOD_ID;
 
+// TODO: use OffsetConfig538
 public class ModConfig {
     private static final Path CONFIG_FILE_LOCATION = FabricLoader.getInstance().getConfigDir().resolve(MOD_ID).resolve("%s.json".formatted(MOD_ID));
     private static final File CONFIG_FILE = CONFIG_FILE_LOCATION.toFile();

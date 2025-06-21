@@ -29,11 +29,11 @@ public class BetterFrostWalkerMain implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("Loading Universal frostwalker mod");
+		LOGGER.info("Loading Better Frost Walker");
 		ModServerCommands.registerCommands();
 
 		if (!CONFIG.serverSideOnly) {
-			ModBlocks.registerModBlocks();
+			ModBlocks.register();
 		}
 
 		final String packName = String.format("%s_ice_still__%s_server_only", CONFIG.generateIceWhileStill, CONFIG.serverSideOnly);
@@ -41,7 +41,10 @@ public class BetterFrostWalkerMain implements ModInitializer {
 		FabricLoader.getInstance().getModContainer(MOD_ID)
 				.map(container -> ResourceManagerHelper.registerBuiltinResourcePack(id(packName),
 						container, Text.literal("Better Frost Walker"), ResourcePackActivationType.ALWAYS_ENABLED))
-				.filter(success -> !success).ifPresent(success -> LOGGER.warn("Could not register built-in data pack."));
+				.ifPresent(success -> {
+					if (success) LOGGER.info("Successfully enabled built-in datapack '{}' for '{}'", packName, MOD_ID);
+					else LOGGER.error("Failed to enable built-in datapack '{}' for '{}'", packName, MOD_ID);
+				});
 	}
 
 	public static Identifier id(String name) {

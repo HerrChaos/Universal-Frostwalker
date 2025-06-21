@@ -1,5 +1,6 @@
 package chaos.better_frost_walker.block;
 
+import chaos.better_frost_walker.BetterFrostWalkerMain;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -54,39 +55,51 @@ public class FrostedMagmaBlock extends Block {
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         world.scheduleBlockTick(pos, this, MathHelper.nextInt(random, 20, 40));
-        if ((random.nextInt(3) == 0 || this.canMelt(world, pos, 4)) && world.getLightLevel(pos) > 11 - state.get(AGE) - state.getOpacity() && this.increaseAge(state, world, pos)) {
-            final BlockPos.Mutable mutable = new BlockPos.Mutable();
-            final Direction[] directions = Direction.values();
 
-            for (Direction direction : directions) {
-                mutable.set(pos, direction);
-
-                final BlockState currentState = world.getBlockState(mutable);
-                if (!currentState.isOf(this) || this.increaseAge(currentState, world, mutable)) continue;
-
-                world.scheduleBlockTick(mutable, this, MathHelper.nextInt(random, 20, 40));
-            }
-
-        } else {
+        if (!shouldRunScheduledTick(state, world, pos, random)) {
             world.scheduleBlockTick(pos, this, MathHelper.nextInt(random, 20, 40));
+            return;
+        }
+
+
+        final BlockPos.Mutable mutable = new BlockPos.Mutable();
+        final Direction[] directions = Direction.values();
+
+        for (Direction direction : directions) {
+            mutable.set(pos, direction);
+
+            final BlockState currentState = world.getBlockState(mutable);
+            if (!currentState.isOf(this) || this.tryIncreaseAge(currentState, world, mutable)) continue;
+
+            world.scheduleBlockTick(mutable, this, MathHelper.nextInt(random, 20, 40));
         }
     }
 
-    private boolean increaseAge(BlockState state, World world, BlockPos pos) {
-        int Age = state.get(AGE);
-        if (Age < MAX_AGE) {
-            world.setBlockState(pos, state.with(AGE, Age + 1), 2);
+    private boolean shouldRunScheduledTick(final BlockState state, final ServerWorld world, final BlockPos pos, final Random random) {
+        if (random.nextInt(3) == 0) return true;
+
+        if (!canMelt(world, pos, 4)) return false;
+
+        if (BetterFrostWalkerMain.CONFIG.meltIceInTheDark) return tryIncreaseAge(state, world, pos);
+        if (world.getLightLevel(pos) > 11 - state.get(AGE) - state.getOpacity()) return tryIncreaseAge(state, world, pos);
+        return false;
+    }
+
+    private boolean tryIncreaseAge(BlockState state, World world, BlockPos pos) {
+        int age = state.get(AGE);
+        if (age < MAX_AGE) {
+            world.setBlockState(pos, state.with(AGE, age + 1), 2);
             return false;
-        } else {
-            this.melt(state, world, pos);
-            return true;
         }
+
+        this.melt(world, pos);
+        return true;
     }
 
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
         if (sourceBlock.getDefaultState().isOf(this) && this.canMelt(world, pos, 2)) {
-            this.melt(state, world, pos);
+            this.melt(world, pos);
         }
 
         super.neighborUpdate(state, world, pos, sourceBlock, wireOrientation, notify);
@@ -112,7 +125,7 @@ public class FrostedMagmaBlock extends Block {
         builder.add(AGE);
     }
 
-    protected void melt(BlockState state, World world, BlockPos pos) {
+    private void melt(World world, BlockPos pos) {
         world.setBlockState(pos, getMeltedState());
         world.updateNeighbor(pos, getMeltedState().getBlock(), null);
     }
