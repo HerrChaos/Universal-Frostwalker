@@ -38,31 +38,6 @@ public abstract class EnchantmentMixin {
         }
     }
 
-    // TODO: can delete?
-    //@WrapOperation(
-    //        method = "applyLocationBasedEffects",
-    //        at = @At(
-    //                value = "INVOKE",
-    //                target = "Lnet/minecraft/enchantment/effect/EnchantmentLocationBasedEffect;apply(Lnet/minecraft/server/world/ServerWorld;ILnet/minecraft/enchantment/EnchantmentEffectContext;Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Vec3d;Z)V"
-    //        )
-    //)
-    //private void betterfrostwalker$setLocationBasedEnchantmentEffectFromFrostWalker(EnchantmentLocationBasedEffect instance, ServerWorld serverWorld, int i, EnchantmentEffectContext enchantmentEffectContext, Entity entity, Vec3d vec3d, boolean b, Operation<Void> original) {
-    //    betterfrostwalker$setEnchantmentEffectFromFrostWalker((Enchantment) (Object) this, instance);
-
-    //    original.call(instance, serverWorld, i, enchantmentEffectContext, entity, vec3d, b);
-    //}
-
-    //@WrapOperation(
-    //        method = "method_60045",
-    //        at = @At(
-    //                value = "INVOKE",
-    //                target = "Lnet/minecraft/enchantment/effect/EnchantmentEntityEffect;apply(Lnet/minecraft/server/world/ServerWorld;ILnet/minecraft/enchantment/EnchantmentEffectContext;Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Vec3d;)V"
-    //        )
-    //)
-    //private static void betterfrostwalker$setTickEnchantmentEffectFromFrostWalker(EnchantmentEntityEffect instance, ServerWorld serverWorld, int i, EnchantmentEffectContext enchantmentEffectContext, Entity entity, Vec3d vec3d, Operation<Void> original) {
-    //    betterfrostwalker$setEnchantmentEffectFromFrostWalker((Enchantment) (Object) this, instance);
-    //}
-
     @Unique
     private static void betterfrostwalker$setEnchantmentEffectFromFrostWalker(Enchantment thiz, EnchantmentLocationBasedEffect effect) {
         if (!(thiz.description().getContent() instanceof TranslatableTextContent translatableTextContent)) return;
