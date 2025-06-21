@@ -20,23 +20,27 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import top.offsetmonkey538.offsetconfig538.api.config.ConfigHolder;
+import top.offsetmonkey538.offsetconfig538.api.config.ConfigManager;
 
 public class BetterFrostWalkerMain implements ModInitializer {
 	public static final String MOD_ID = "better-frost-walker";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	public static ModConfig CONFIG = ModConfig.createOrLoad();
+	public static final ConfigHolder<ModConfig> config = new ConfigHolder<>(ModConfig::new, LOGGER::error);
 
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Loading Better Frost Walker");
 		ModServerCommands.registerCommands();
 
-		if (!CONFIG.serverSideOnly) {
+		ConfigManager.INSTANCE.init(config);
+
+		if (!config.get().serverSideOnly) {
 			ModBlocks.register();
 		}
 
-		final String packName = String.format("%s_ice_still__%s_server_only", CONFIG.generateIceWhileStill, CONFIG.serverSideOnly);
+		final String packName = String.format("%s_ice_still__%s_server_only", config.get().generateIceWhileStill, config.get().serverSideOnly);
 
 		FabricLoader.getInstance().getModContainer(MOD_ID)
 				.map(container -> ResourceManagerHelper.registerBuiltinResourcePack(id(packName),

@@ -36,8 +36,20 @@ loom {
 	}
 }
 
-repositories {
+configurations {
+	includeImplementation
+	include.extendsFrom includeImplementation
+	implementation.extendsFrom includeImplementation
+}
 
+repositories {
+	maven {
+		name = "OffsetMods538"
+		url = "https://maven.offsetmonkey538.top/releases"
+		content {
+			includeGroup "top.offsetmonkey538.offsetconfig538"
+		}
+	}
 }
 
 dependencies {
@@ -48,6 +60,9 @@ dependencies {
 
 	// Fabric API
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fapi_version}"
+
+	// OffsetConfig538
+	includeImplementation "top.offsetmonkey538.offsetconfig538:offsetconfig538:${project.offsetconfig538_version}"
 }
 
 processResources {

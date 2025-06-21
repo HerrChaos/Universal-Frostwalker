@@ -18,7 +18,7 @@ public abstract class PowderedSnowBlockMixin {
             at = @At("RETURN")
     )
     private static boolean betterfrostwalker$standOnPowderedSnowWithFrostWalker(boolean original, Entity entity) {
-        if (!BetterFrostWalkerMain.CONFIG.standingOnPowderedSnow) return original;
+        if (!BetterFrostWalkerMain.config.get().standingOnPowderedSnow) return original;
         if (!((Object) entity instanceof LivingEntity livingEntity)) return original;
         if (!hasFrostWalker(livingEntity, livingEntity.getWorld())) return original;
 

@@ -13,7 +13,7 @@ import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-import static chaos.better_frost_walker.BetterFrostWalkerMain.CONFIG;
+import static chaos.better_frost_walker.BetterFrostWalkerMain.config;
 import static chaos.better_frost_walker.BetterFrostWalkerMain.hasFrostWalker;
 
 @Mixin(PlayerEntity.class)
@@ -28,11 +28,11 @@ public abstract class PlayerEntityMixin {
     )
     public boolean betterfrostwalker$disableFallDamageOnFrostedBlocks(PlayerEntity instance, ServerWorld world, DamageSource source, Operation<Boolean> original) {
         final PlayerEntity player = (PlayerEntity) (Object) this;
-        if (!BetterFrostWalkerMain.CONFIG.noIceFallDamage) return false;
+        if (!BetterFrostWalkerMain.config.get().noIceFallDamage) return false;
         if (!source.isOf(DamageTypes.FALL)) return false;
         if (!hasFrostWalker(player, player.getWorld())) return false;
 
         final BlockState blockState = player.getWorld().getBlockState(player.getBlockPos().down());
-        return blockState.isOf(Blocks.FROSTED_ICE) || (!CONFIG.serverSideOnly && blockState.isOf(ModBlocks.FROSTED_MAGMA));
+        return blockState.isOf(Blocks.FROSTED_ICE) || (!config.get().serverSideOnly && blockState.isOf(ModBlocks.FROSTED_MAGMA));
     }
 }

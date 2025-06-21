@@ -80,7 +80,7 @@ public class FrostedMagmaBlock extends Block {
 
         if (!canMelt(world, pos, 4)) return false;
 
-        if (BetterFrostWalkerMain.CONFIG.meltIceInTheDark) return tryIncreaseAge(state, world, pos);
+        if (BetterFrostWalkerMain.config.get().meltIceInTheDark) return tryIncreaseAge(state, world, pos);
         if (world.getLightLevel(pos) > 11 - state.get(AGE) - state.getOpacity()) return tryIncreaseAge(state, world, pos);
         return false;
     }

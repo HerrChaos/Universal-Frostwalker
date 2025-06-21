@@ -20,7 +20,7 @@ public abstract class FrostedIceBlockMixin {
             )
     )
     public int betterfrostwalker$meltIceInTheDarkIfEnabled(ServerWorld instance, BlockPos blockPos, Operation<Integer> original) {
-        if (BetterFrostWalkerMain.CONFIG.meltIceInTheDark) return 15; // max light level, should always be higher than the other part of the condition
+        if (BetterFrostWalkerMain.config.get().meltIceInTheDark) return 15; // max light level, should always be higher than the other part of the condition
 
         return original.call(instance, blockPos);
     }
