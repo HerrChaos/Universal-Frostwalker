@@ -1,18 +1,19 @@
 {
 	"schemaVersion": 1,
 	"id": "better-frost-walker",
-	"version": "2.1.0",
+	"version": "${modVersion}",
 	"name": "Better Frost Walker",
 	"description": "Makes frost walker better!",
 	"authors": [
-		"Chaos",
+		"HerrChaos",
 		"OffsetMonkey538"
 	],
 	"contact": {
-		"youtube": "www.youtube.com/@HerrChaotic",
-		"github": "https://github.com/HerrChaos"
+		"sources": "https://github.com/HerrChaos/Universal-Frostwalker",
+		"issues": "https://github.com/HerrChaos/Universal-Frostwalker/issues",
+		"homepage": "https://modrinth.com/mod/better-frost-walker"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/better-frost-walker/icon.png",
 	"environment": "*",
 	"entrypoints": {
@@ -31,12 +32,8 @@
 		}
 	],
 	"depends": {
-		"fabricloader": ">=0.16.9",
 		"minecraft": "${supportedMinecraftVersions}",
 		"java": ">=21",
 		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
 	}
 }
