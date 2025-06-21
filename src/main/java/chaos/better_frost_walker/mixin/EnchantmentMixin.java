@@ -38,6 +38,7 @@ public abstract class EnchantmentMixin {
         }
     }
 
+    // TODO: can delete?
     //@WrapOperation(
     //        method = "applyLocationBasedEffects",
     //        at = @At(

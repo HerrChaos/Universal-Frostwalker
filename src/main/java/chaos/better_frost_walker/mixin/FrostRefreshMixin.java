@@ -1,4 +1,5 @@
 package chaos.better_frost_walker.mixin;
+// todo: can be removed? This is done by minecraft now I think?
 
 //import chaos.frost.NewFrostwalker;
 //import net.minecraft.enchantment.EnchantmentHelper;

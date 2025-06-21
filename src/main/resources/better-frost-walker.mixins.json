@@ -3,9 +3,9 @@
 	"package": "chaos.better_frost_walker.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-        "AlwaysMeltIceMixin",
+		"FrostedIceBlockMixin",
         "EnchantmentMixin",
-        "NoIceFallDamage",
+		"PlayerEntityMixin",
         "PowderedSnowBlockMixin",
         "ReplaceDiskEnchantmentEffectMixin"
 	],

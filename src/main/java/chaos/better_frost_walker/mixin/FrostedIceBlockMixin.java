@@ -7,9 +7,9 @@ import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(FrostedIceBlock.class)
-public abstract class AlwaysMeltIceMixin {
+public abstract class FrostedIceBlockMixin {
     @ModifyConstant(method = "scheduledTick", constant = @Constant(intValue = 11))
-    public int mixinLimitInt(int constant) {
+    public int betterfrostwalker$alwaysMeltIceIfEnabled(int constant) {
         if (BetterFrostWalkerMain.CONFIG.meltIceInTheDark) {
             return -1;
         }

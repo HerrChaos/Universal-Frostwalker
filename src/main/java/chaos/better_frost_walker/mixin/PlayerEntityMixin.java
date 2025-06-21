@@ -17,10 +17,10 @@ import static chaos.better_frost_walker.BetterFrostWalkerMain.CONFIG;
 import static chaos.better_frost_walker.BetterFrostWalkerMain.hasFrostWalker;
 
 @Mixin(PlayerEntity.class)
-public abstract class NoIceFallDamage {
+public abstract class PlayerEntityMixin {
 
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
-    public void damage(ServerWorld world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+    public void betterfrostwalker$disableFallDamageOnFrostedBlocks(ServerWorld world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         final PlayerEntity player = (PlayerEntity) (Object) this;
         if (!BetterFrostWalkerMain.CONFIG.noIceFallDamage) return;
         if (!source.isOf(DamageTypes.FALL)) return;

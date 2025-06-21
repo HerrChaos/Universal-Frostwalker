@@ -21,7 +21,7 @@ import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 
 import java.util.Optional;
 
-// TODO: this is unused?
+// TODO: this is unused? yeah looks like ReplaceDiskEnchantmentEffectMixin does stuff?
 public record DropAndReplaceDiskEnchantmentEffect(
         EnchantmentLevelBasedValue radius,
         EnchantmentLevelBasedValue height,

@@ -1,4 +1,5 @@
 package chaos.better_frost_walker.mixin;
+// todo: can be removed? commented out code from an older version I guess? pretty sure enchantment classes no longer exist
 
 //import chaos.frost.NewFrostwalker;
 //import chaos.frost.block.FrostedMagmaBlock;
