@@ -27,14 +27,12 @@ public class BetterFrostWalkerMain implements ModInitializer {
 	public static final String MOD_ID = "better-frost-walker";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	public static final ConfigHolder<ModConfig> config = new ConfigHolder<>(ModConfig::new, LOGGER::error);
+	public static final ConfigHolder<ModConfig> config = ConfigManager.INSTANCE.init(ConfigHolder.create(ModConfig::new, LOGGER::error));
 
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Loading Better Frost Walker");
 		ModServerCommands.registerCommands();
-
-		ConfigManager.INSTANCE.init(config);
 
 		if (!config.get().serverSideOnly) {
 			ModBlocks.register();

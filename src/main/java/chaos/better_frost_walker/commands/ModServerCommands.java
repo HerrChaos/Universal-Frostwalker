@@ -1,16 +1,18 @@
 package chaos.better_frost_walker.commands;
 
-import chaos.better_frost_walker.BetterFrostWalkerMain;
+import blue.endless.jankson.Comment;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
+import top.offsetmonkey538.offsetconfig538.api.config.ConfigManager;
 
+import static chaos.better_frost_walker.BetterFrostWalkerMain.MOD_ID;
+import static chaos.better_frost_walker.BetterFrostWalkerMain.config;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
@@ -21,6 +23,18 @@ public class ModServerCommands {
 
     // TODO: change this to /better-frost-walker config set {optionName} {value} as part of refactor
     private static void addCommands(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess commandRegistryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
+        final LiteralArgumentBuilder<ServerCommandSource> setCommand = literal("set");
+        final LiteralArgumentBuilder<ServerCommandSource> getCommand = literal("get"); // todo
+
+        addBooleanOption(setCommand, "generateIceWhileStill", true);
+        addBooleanOption(setCommand, "standingOnPowderedSnow", false);
+        addBooleanOption(setCommand, "serverSideOnly", true);
+        addBooleanOption(setCommand, "noIceFallDamage", false);
+        addBooleanOption(setCommand, "meltIceInTheDark", false);
+
+        dispatcher.register(literal(MOD_ID).then(literal("config").then(setCommand)));
+        dispatcher.register(literal(MOD_ID).then(literal("config").then(getCommand))); // todo
+
         /*
         LiteralArgumentBuilder<ServerCommandSource> frostConfig = literal("frostConfig");
 
@@ -89,5 +103,29 @@ public class ModServerCommands {
 
         dispatcher.register(frostConfig);
          */
+    }
+
+    private static void addBooleanOption(final LiteralArgumentBuilder<ServerCommandSource> setCommand, final String optionName, final boolean requiresRestart) {
+        setCommand.then(
+                literal(optionName)
+                        .then(
+                                argument("newValue", BoolArgumentType.bool())
+                                        .executes(context -> {
+                                            final boolean newValue = BoolArgumentType.getBool(context, "newValue");
+
+                                            try {
+                                                config.getConfigClass().getDeclaredField(optionName).set(config.get(), newValue);
+                                            } catch (IllegalAccessException | NoSuchFieldException e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                            ConfigManager.INSTANCE.save(config);
+
+                                            if (requiresRestart) context.getSource().sendMessage(Text.of("THIS WILL REQUIRE A RESTART!!"));
+                                            context.getSource().sendMessage(Text.of("Set '%s' to '%s'".formatted(optionName, newValue)));
+
+                                            return 1;
+                                        })
+                        )
+                );
     }
 }
