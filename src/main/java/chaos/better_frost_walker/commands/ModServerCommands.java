@@ -24,16 +24,16 @@ public class ModServerCommands {
     // TODO: change this to /better-frost-walker config set {optionName} {value} as part of refactor
     private static void addCommands(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess commandRegistryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
         final LiteralArgumentBuilder<ServerCommandSource> setCommand = literal("set");
-        final LiteralArgumentBuilder<ServerCommandSource> getCommand = literal("get"); // todo
+        final LiteralArgumentBuilder<ServerCommandSource> getCommand = literal("get");
 
-        addBooleanOption(setCommand, "generateIceWhileStill", true);
-        addBooleanOption(setCommand, "standingOnPowderedSnow", false);
-        addBooleanOption(setCommand, "serverSideOnly", true);
-        addBooleanOption(setCommand, "noIceFallDamage", false);
-        addBooleanOption(setCommand, "meltIceInTheDark", false);
+        addBooleanOption(setCommand, getCommand, "generateIceWhileStill", true);
+        addBooleanOption(setCommand, getCommand, "standingOnPowderedSnow", false);
+        addBooleanOption(setCommand, getCommand, "serverSideOnly", true);
+        addBooleanOption(setCommand, getCommand, "noIceFallDamage", false);
+        addBooleanOption(setCommand, getCommand, "meltIceInTheDark", false);
 
         dispatcher.register(literal(MOD_ID).then(literal("config").then(setCommand)));
-        dispatcher.register(literal(MOD_ID).then(literal("config").then(getCommand))); // todo
+        dispatcher.register(literal(MOD_ID).then(literal("config").then(getCommand)));
 
         /*
         LiteralArgumentBuilder<ServerCommandSource> frostConfig = literal("frostConfig");
@@ -105,7 +105,7 @@ public class ModServerCommands {
          */
     }
 
-    private static void addBooleanOption(final LiteralArgumentBuilder<ServerCommandSource> setCommand, final String optionName, final boolean requiresRestart) {
+    private static void addBooleanOption(final LiteralArgumentBuilder<ServerCommandSource> setCommand, final LiteralArgumentBuilder<ServerCommandSource> getCommand, final String optionName, final boolean requiresRestart) {
         setCommand.then(
                 literal(optionName)
                         .then(
@@ -127,5 +127,21 @@ public class ModServerCommands {
                                         })
                         )
                 );
+
+        getCommand.then(
+                literal(optionName)
+                        .executes(context -> {
+                            final boolean value;
+                            try {
+                                value = (boolean) config.getConfigClass().getDeclaredField(optionName).get(config.get());
+                            } catch (IllegalAccessException | NoSuchFieldException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                            context.getSource().sendMessage(Text.of("Value of '%s' is '%s'".formatted(optionName, value)));
+
+                            return 1;
+                        })
+        );
     }
 }
