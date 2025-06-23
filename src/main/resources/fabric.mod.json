@@ -1,42 +1,39 @@
 {
 	"schemaVersion": 1,
-	"id": "frost",
-	"version": "2.1.0",
-	"name": "New FrostWalker",
-	"description": "A Simple FrostWalker refactor",
+	"id": "better-frost-walker",
+	"version": "${modVersion}",
+	"name": "Better Frost Walker",
+	"description": "Makes frost walker better!",
 	"authors": [
-		"Chaos",
-		"OffsetMonkey"
+		"HerrChaos",
+		"OffsetMonkey538"
 	],
 	"contact": {
-		"youtube": "www.youtube.com/@HerrChaotic",
-		"github": "https://github.com/HerrChaos"
+		"sources": "https://github.com/HerrChaos/Universal-Frostwalker",
+		"issues": "https://github.com/HerrChaos/Universal-Frostwalker/issues",
+		"homepage": "https://modrinth.com/mod/better-frost-walker"
 	},
-	"license": "CC0-1.0",
-	"icon": "assets/frost/icon.png",
+	"license": "MIT",
+	"icon": "assets/better-frost-walker/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"chaos.frost.NewFrostwalker"
+			"chaos.better_frost_walker.BetterFrostWalkerMain"
 		],
 		"client": [
-			"chaos.frost.NewFrostwalkerClient"
+			"chaos.better_frost_walker.BetterFrostWalkerClient"
 		]
 	},
 	"mixins": [
-		"frost.mixins.json",
+		"better-frost-walker.mixins.json",
 		{
-			"config": "frost.client.mixins.json",
+			"config": "better-frost-walker.client.mixins.json",
 			"environment": "client"
 		}
 	],
 	"depends": {
-		"fabricloader": ">=0.16.9",
 		"minecraft": "${supportedMinecraftVersions}",
 		"java": ">=21",
 		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
 	}
 }

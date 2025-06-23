@@ -1,0 +1,5 @@
+{
+  "text.config.better-frost-walker-config.option.MaxLevel" : "Max Frost Walker Level",
+  "text.config.better-frost-walker-config.option.generateIceWhileStill" : "Should blocks generate while standing still",
+  "text.config.better-frost-walker-config.title" : "Better Frost Walker Config"
+}
