@@ -1,7 +1,7 @@
 import dex.plugins.outlet.v2.util.ReleaseType
 
 plugins {
-	id 'fabric-loom' version '1.10-SNAPSHOT'
+	id 'fabric-loom' version '1.11-SNAPSHOT'
 	id 'io.github.dexman545.outlet' version '1.6.1'
 	id 'com.modrinth.minotaur' version '2.+'
 	id 'maven-publish'
@@ -17,7 +17,7 @@ base {
 outlet {
 	allowedReleaseTypes = [ReleaseType.RELEASE]
 	maintainPropertiesFile = System.getenv("DISABLE_PROPERTIES_UPDATE") == null
-	mcVersionRange = project.supported_minecraft_versions
+	mcVersionRange = project.minecraft_version
 	propertiesData = [
 	        'yarn_mappings': outlet.yarnVersion(project.minecraft_version),
 			'loader_version': outlet.loaderVersion(),
@@ -78,13 +78,13 @@ dependencies {
 processResources {
 	inputs.properties(Map.of(
 			"version", project.version,
-			"supportedMinecraftVersions", project.supported_minecraft_versions
+			"minecraft_version", project.minecraft_version
 	))
 
 	filesMatching("fabric.mod.json") {
 		expand(Map.of(
 				"version", project.version,
-				"supportedMinecraftVersions", project.supported_minecraft_versions,
+				"minecraft_version", project.minecraft_version,
 		))
 	}
 }
