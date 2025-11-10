@@ -4,10 +4,12 @@ import chaos.frost.access.ReplaceDiskEnchantmentEffectAccess;
 import net.minecraft.component.ComponentMap;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.EnchantmentEffectComponentTypes;
+import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.effect.EnchantmentEffectEntry;
 import net.minecraft.enchantment.effect.EnchantmentEntityEffect;
 import net.minecraft.enchantment.effect.EnchantmentLocationBasedEffect;
+import net.minecraft.item.Item;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableTextContent;
@@ -17,18 +19,20 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
 @Mixin(Enchantment.class)
 public abstract class EnchantmentMixin {
+    /*
     @Shadow public abstract <T> List<T> getEffect(ComponentType<List<T>> type);
 
     @Inject(
-            method = "<init>",
+            method = "definition(Lnet/minecraft/registry/entry/RegistryEntryList;IILnet/minecraft/enchantment/Enchantment$Cost;Lnet/minecraft/enchantment/Enchantment$Cost;I[Lnet/minecraft/component/type/AttributeModifierSlot;)Lnet/minecraft/enchantment/Enchantment$Definition;",
             at = @At("TAIL")
     )
-    private void betterfrostwalker$setEnchantmentEffectsFromFrostWalker(Text text, Enchantment.Definition definition, RegistryEntryList<Enchantment> registryEntryList, ComponentMap componentMap, CallbackInfo ci) {
+    private void betterfrostwalker$setEnchantmentEffectsFromFrostWalker(RegistryEntryList<Item> supportedItems, int weight, int maxLevel, Enchantment.Cost minCost, Enchantment.Cost maxCost, int anvilCost, AttributeModifierSlot[] slots, CallbackInfoReturnable<Enchantment.Definition> cir) {
         for (EnchantmentEffectEntry<EnchantmentLocationBasedEffect> locationBasedEffect : getEffect(EnchantmentEffectComponentTypes.LOCATION_CHANGED)) {
             betterfrostwalker$setEnchantmentEffectFromFrostWalker((Enchantment) (Object) this, locationBasedEffect.effect());
         }
@@ -71,4 +75,6 @@ public abstract class EnchantmentMixin {
 
         effectAccess.betterfrostwalker$setIsFrostWalker();
     }
+
+     */
 }

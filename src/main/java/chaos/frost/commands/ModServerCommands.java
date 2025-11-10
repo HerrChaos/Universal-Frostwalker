@@ -1,5 +1,6 @@
 package chaos.frost.commands;
 
+/*
 import chaos.frost.NewFrostwalker;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
@@ -89,3 +90,6 @@ public class ModServerCommands {
     }
 
 }
+
+
+ */
