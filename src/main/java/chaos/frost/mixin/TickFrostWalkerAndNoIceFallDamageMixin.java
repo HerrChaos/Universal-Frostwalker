@@ -24,13 +24,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.RaycastContext;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static chaos.frost.NewFrostwalker.CONFIG;
 import static chaos.frost.NewFrostwalker.hasFrostWalker;
 
 @Mixin(PlayerEntity.class)
@@ -73,16 +71,18 @@ public abstract class TickFrostWalkerAndNoIceFallDamageMixin {
             return;
         }
 
-        BlockState blockState = player.getEntityWorld().getBlockState(blockPos2);
-        BlockState replacementState = getReplacementState(blockState);
-
-        if (blockState.isIn(ModBlockTags.REPLACED_BY_FROST_WALKER) && blockState.getFluidState().isIn(FluidTags.WATER)) {
-            Block.dropStacks(blockState, player.getEntityWorld(), blockPos2);
-            player.getEntityWorld().setBlockState(blockPos2, replacementState);
+        if ((player.getBlockPos().getY() == blockPos2.getY() || player.getBlockPos().up().getY() == blockPos2.getY()) && player.getVehicle() == null) {
             return;
         }
 
-        if (((blockState.isOf(Blocks.WATER) || blockState.isOf(Blocks.LAVA)) && blockState.get(FluidBlock.LEVEL) == 0) || (blockState.isOf(Blocks.FROSTED_ICE) || (!CONFIG.serverSideOnly && blockState.isOf(ModBlocks.FROSTED_MAGMA)))) {
+        BlockState blockState = player.getEntityWorld().getBlockState(blockPos2);
+        BlockState replacementState = getReplacementState(blockState);
+
+        if (((blockState.isOf(Blocks.WATER) || (!NewFrostwalker.CONFIG.serverSideOnly && blockState.isOf(Blocks.LAVA))) && blockState.get(FluidBlock.LEVEL) == 0) || (blockState.isOf(Blocks.FROSTED_ICE) || (!NewFrostwalker.CONFIG.serverSideOnly && blockState.isOf(ModBlocks.FROSTED_MAGMA)))) {
+            if (blockState.isIn(ModBlockTags.REPLACED_BY_FROST_WALKER) && blockState.getFluidState().isIn(FluidTags.WATER)) {
+                Block.dropStacks(blockState, player.getEntityWorld(), blockPos2);
+            }
+
             player.getEntityWorld().setBlockState(blockPos2, replacementState);
         }
     }
@@ -93,7 +93,7 @@ public abstract class TickFrostWalkerAndNoIceFallDamageMixin {
             return Blocks.FROSTED_ICE.getDefaultState();
         }
 
-        if (!CONFIG.serverSideOnly && (blockState.isOf(Blocks.LAVA) || blockState.isOf(ModBlocks.FROSTED_MAGMA))) {
+        if (!NewFrostwalker.CONFIG.serverSideOnly && (blockState.isOf(Blocks.LAVA) || blockState.isOf(ModBlocks.FROSTED_MAGMA))) {
             return ModBlocks.FROSTED_MAGMA.getDefaultState();
         }
 
@@ -110,7 +110,7 @@ public abstract class TickFrostWalkerAndNoIceFallDamageMixin {
         final BlockState blockState = player.getEntityWorld().getBlockState(player.getBlockPos().down());
         if (
                 blockState.isOf(Blocks.FROSTED_ICE)
-                || (!CONFIG.serverSideOnly && blockState.isOf(ModBlocks.FROSTED_MAGMA))
+                || (!NewFrostwalker.CONFIG.serverSideOnly && blockState.isOf(ModBlocks.FROSTED_MAGMA))
         ) cir.setReturnValue(false);
     }
 }

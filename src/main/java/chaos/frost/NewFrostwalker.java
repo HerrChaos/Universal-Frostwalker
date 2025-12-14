@@ -1,6 +1,7 @@
 package chaos.frost;
 
 import chaos.frost.block.ModBlocks;
+import chaos.frost.client.NewFrostwalkerClient;
 import chaos.frost.config.UniversalConfig;
 import net.fabricmc.api.ModInitializer;
 
@@ -28,8 +29,6 @@ public class NewFrostwalker implements ModInitializer {
 		if (!CONFIG.serverSideOnly) {
 			ModBlocks.registerModBlocks();
 		}
-
-		final String packName = String.format("%s_ice_still__%s_server_only", CONFIG.generateIceWhileStill, CONFIG.serverSideOnly);
 	}
 
 	public static Identifier id(String name) {
@@ -37,6 +36,9 @@ public class NewFrostwalker implements ModInitializer {
 	}
 
 	public static boolean hasFrostWalker(LivingEntity entity, World world) {
+        if (!NewFrostwalkerClient.isFrostWalkerEnabled) {
+            return false;
+        }
 		final RegistryKey<Registry<Enchantment>> enchantmentRegistry = RegistryKeys.ENCHANTMENT;
 		return EnchantmentHelper.getEquipmentLevel(world.getRegistryManager().getOrThrow(enchantmentRegistry).getEntry(Enchantments.FROST_WALKER.getValue()).orElseThrow(), entity) > 0;
 	}
