@@ -40,6 +40,10 @@ public abstract class TickFrostWalkerAndNoIceFallDamageMixin {
 
         final PlayerEntity player = (PlayerEntity) (Object) this;
 
+        if (!NewFrostwalker.CONFIG.generateIceWhileStill && isStandingStill(player)) {
+            return;
+        }
+
         if (!hasFrostWalker(player, player.getEntityWorld())) {
             return;
         }
@@ -54,6 +58,11 @@ public abstract class TickFrostWalkerAndNoIceFallDamageMixin {
         replaceAllBlocksAround(blockPos, radius, player);
         replaceAllBlocksAround(blockPos.add(BlockPos.ofFloored(player.getVelocity())), radius, player);
         tryReplaceAt(player, player.getEntityWorld().raycast(new RaycastContext(player.getRootVehicle().getEntityPos(), player.getRootVehicle().getEntityPos().add(player.getRootVehicle().getVelocity()), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.SOURCE_ONLY, player)).getBlockPos());
+    }
+
+    @Unique
+    private boolean isStandingStill(PlayerEntity player) {
+        return player.getX() == player.lastX && player.getY() == player.lastY && player.getZ() == player.lastZ;
     }
 
     @Unique
