@@ -1,15 +1,14 @@
 {
-	"required": true,
-	"package": "chaos.frost.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"AlwaysMeltIceMixin",
-		"EnchantmentMixin",
-		"NoIceFallDamage",
-		"PowderedSnowBlockMixin",
-		"ReplaceDiskEnchantmentEffectMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "package": "chaos.frost.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "AlwaysMeltIceMixin",
+    "BoatEntityStepUpMixin",
+    "TickFrostWalkerAndNoIceFallDamageMixin",
+    "PowderedSnowBlockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }

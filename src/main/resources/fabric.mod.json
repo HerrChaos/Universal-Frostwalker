@@ -5,12 +5,12 @@
 	"name": "New FrostWalker",
 	"description": "A Simple FrostWalker refactor",
 	"authors": [
-		"Chaos",
+		"Herr Chaos",
 		"OffsetMonkey"
 	],
 	"contact": {
-		"youtube": "www.youtube.com/@HerrChaotic",
-		"github": "https://github.com/HerrChaos"
+		"youtube": "https://www.youtube.com/@herr_chaos",
+		"github": "https://github.com/HerrChaos/Universal-Frostwalker"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/frost/icon.png",
@@ -19,16 +19,12 @@
 		"main": [
 			"chaos.frost.NewFrostwalker"
 		],
-		"client": [
-			"chaos.frost.NewFrostwalkerClient"
-		]
+        "client": [
+            "chaos.frost.client.NewFrostwalkerClient"
+        ]
 	},
 	"mixins": [
-		"frost.mixins.json",
-		{
-			"config": "frost.client.mixins.json",
-			"environment": "client"
-		}
+		"frost.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.16.9",

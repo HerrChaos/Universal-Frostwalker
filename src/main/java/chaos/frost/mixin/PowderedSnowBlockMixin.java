@@ -20,7 +20,7 @@ public abstract class PowderedSnowBlockMixin {
     private static boolean standOnPowderedSnowWithFrostWalker(boolean original, Entity entity) {
         if (!NewFrostwalker.CONFIG.standingOnPowderedSnow) return original;
         if (!((Object) entity instanceof LivingEntity livingEntity)) return original;
-        if (!hasFrostWalker(livingEntity, livingEntity.getWorld())) return original;
+        if (!hasFrostWalker(livingEntity, livingEntity.getEntityWorld())) return original;
 
         return true;
     }
