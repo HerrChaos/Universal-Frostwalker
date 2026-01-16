@@ -1,10 +1,10 @@
 package chaos.frost;
 
 import chaos.frost.block.ModBlocks;
-import chaos.frost.client.NewFrostwalkerClient;
 import chaos.frost.config.UniversalConfig;
+import chaos.frost.data_attachment.ModDataAttachments;
+import chaos.frost.networking.ModNetworking;
 import net.fabricmc.api.ModInitializer;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -26,6 +26,8 @@ public class NewFrostwalker implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("Loading Universal frostwalker mod");
 
+        ModNetworking.init();
+
 		if (!CONFIG.serverSideOnly) {
 			ModBlocks.registerModBlocks();
 		}
@@ -36,7 +38,7 @@ public class NewFrostwalker implements ModInitializer {
 	}
 
 	public static boolean hasFrostWalker(LivingEntity entity, World world) {
-        if (!NewFrostwalkerClient.isFrostWalkerEnabled) {
+        if (!entity.getAttachedOrCreate(ModDataAttachments.IS_FROSTWALKER_ENABLED)) {
             return false;
         }
 		final RegistryKey<Registry<Enchantment>> enchantmentRegistry = RegistryKeys.ENCHANTMENT;

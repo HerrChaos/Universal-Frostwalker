@@ -1,7 +1,11 @@
 package chaos.frost.block;
 
 import chaos.frost.NewFrostwalker;
-import net.minecraft.block.*;
+import chaos.frost.block.custom.FrostedMagmaBlock;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.MapColor;
 import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -13,7 +17,7 @@ import net.minecraft.world.BlockView;
 import java.util.function.Function;
 
 import static chaos.frost.NewFrostwalker.id;
-import static chaos.frost.block.FrostedMagmaBlock.AGE;
+import static chaos.frost.block.custom.FrostedMagmaBlock.AGE;
 
 public class ModBlocks {
     public static final Block FROSTED_MAGMA = register(
